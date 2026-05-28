@@ -2,6 +2,17 @@
 
 Marketing site for JT Cleaning, built with Next.js App Router, Tailwind CSS v4, shadcn/ui, React Hook Form, and Zod.
 
+## Deployment mode
+
+This project is configured as a static export.
+
+- Build command: `npm run build`
+- Output directory: `out`
+- Server runtime: not required
+- Wrangler / OpenNext: not required for this site
+
+If a host auto-detects this as an OpenNext or Cloudflare Functions project, switch the framework/deployment target to a static site and publish the `out` directory instead.
+
 ## Local development
 
 Run the development server:
@@ -18,6 +29,12 @@ Run the production build:
 
 ```bash
 npm run build
+```
+
+Preview the built static site locally:
+
+```bash
+npm run preview
 ```
 
 ## Main project files

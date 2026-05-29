@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import {
+  CarFront,
   CheckCircle2,
   Droplets,
   FileText,
@@ -22,13 +23,22 @@ import baHouse from "@/assets/ba-house.jpg";
 import baDeck from "@/assets/ba-deck.jpg";
 
 export const Route = createFileRoute("/")({
+  validateSearch: (search) => {
+    const contact = search.contact;
+    const contactError = search.contactError;
+
+    return {
+      contact: contact === "success" || contact === "error" ? contact : undefined,
+      contactError: typeof contactError === "string" ? contactError : undefined,
+    };
+  },
   head: () => ({
     meta: [
       { title: "JT Cleaning | Pressure Washing, Window Cleaning & Lawn Mowing" },
       {
         name: "description",
         content:
-          "JT Cleaning provides pressure washing, window cleaning, gutter cleaning, and lawn mowing for local homes. Call (920) 691-2356 for a free quote.",
+          "JT Cleaning provides pressure washing, window cleaning, gutter cleaning, lawn mowing, and car detailing for local homes. Call (920) 691-2356 for a free quote.",
       },
       {
         property: "og:title",
@@ -52,7 +62,7 @@ export const Route = createFileRoute("/")({
           name: "JT Cleaning",
           telephone: "+19206912356",
           description:
-            "Pressure washing, window cleaning, gutter cleaning, driveway cleaning, and lawn mowing for local homes.",
+            "Pressure washing, window cleaning, gutter cleaning, driveway cleaning, lawn mowing, and car detailing for local homes.",
           areaServed: "Local",
         }),
       },
@@ -92,9 +102,9 @@ const services = [
     desc: "Safer, brighter walkways with less grime and buildup underfoot.",
   },
   {
-    icon: Sparkles,
-    title: "Deck & Patio Cleaning",
-    desc: "Freshen outdoor gathering spaces before summer weekends and family events.",
+    icon: CarFront,
+    title: "Car Detailing",
+    desc: "Interior and exterior detailing that leaves your vehicle clean, polished, and refreshed.",
   },
   {
     icon: Droplets,
@@ -191,14 +201,93 @@ const privacySections = [
   },
 ];
 
+const termsSections = [
+  {
+    title: "Overview",
+    body: [
+      "JT Cleaning LLC Terms of Use are effective as of 5/28/2026.",
+      "For purposes of this agreement, “Site” refers to the Company’s website, which can be accessed at jtcleaners.com. “Service” refers to the Company’s services accessed via the Site, in which users can book residential or commercial cleaning services. The terms “we,” “us,” and “our” refer to the Company. “You” refers to you, as a user of our Site or our Service.",
+      "By accessing or using the Service, you signify your agreement to these Terms of Use. If you do not agree to be bound by these Terms of Use in their entirety, you may not access or use the Service.",
+    ],
+  },
+  {
+    title: "Privacy Policy",
+    body: [
+      "The Company respects the privacy of its Service users. Please refer to the Company’s Privacy Policy found on the website, which explains how we collect, use, and disclose information that pertains to your privacy. When you access or use the Service, you signify your agreement to the Privacy Policy as well as these Terms of Use.",
+    ],
+  },
+  {
+    title: "About the Service",
+    body: ["The Service allows you to digitally book residential or commercial cleaning services."],
+  },
+  {
+    title: "Registration and Use Restrictions",
+    body: [
+      "You need to be at least 13 years old and a resident of the United States to register for and use the Service. If you sign up, you may create a personalized account with a unique username and password and agree to notify us immediately of any unauthorized use of your account.",
+      "You agree not to access the Service for any reason other than your personal, non-commercial use, collect personal data of users, solicit business in connection with a commercial enterprise, distribute parts of the Site without written permission, use the Service for unlawful purposes, harass or harm others, use another user’s account without permission, interfere with the Service, scrape or crawl the Service, bypass security measures, or publish malicious content.",
+    ],
+  },
+  {
+    title: "Posting and Conduct Restrictions",
+    body: [
+      "If you submit User Content such as your name, organization, address, payment information, or profile picture, you are solely responsible for that content. We may remove User Content at our sole discretion.",
+      "By submitting User Content, you represent that it is accurate, lawful, and that you have the right to share it. You grant the Site a worldwide, non-exclusive, royalty-free license to use that content in connection with providing the Service, and you acknowledge that we may determine whether submissions comply with these Terms.",
+    ],
+  },
+  {
+    title: "Content, Links, and Copyright",
+    body: [
+      "We do not guarantee the accuracy, completeness, or usefulness of information made available through the Service and may monitor or remove materials in public areas where appropriate.",
+      "The Service may include links to third-party sites, applications, software, or content. These are provided as a convenience only. We do not control or endorse them and are not responsible for their accuracy, privacy practices, or content.",
+      "We respect intellectual property rights and may terminate repeat infringer accounts where appropriate. DMCA notices and counter-notices may be sent to services@jtcleaners.com with the information required under 17 U.S.C. § 512.",
+    ],
+  },
+  {
+    title: "License Grant and Intellectual Property",
+    body: [
+      "By posting User Content via the Service, you grant the Company a royalty-free, sublicensable, transferable, perpetual, irrevocable, non-exclusive, worldwide license to use, reproduce, modify, publish, distribute, publicly perform, publicly display, and make derivative works of that content in connection with the Service.",
+      "You acknowledge that we and our licensors retain ownership of all intellectual property rights related to the Service, including copyrights, trademarks, and other proprietary rights.",
+    ],
+  },
+  {
+    title: "Communications",
+    body: [
+      "Communications made through the Service’s email and messaging system do not constitute legal notice where legal notice is required. You consent to receive communications from us electronically and agree that such communications satisfy legal requirements for written communications.",
+      "We may use your email address to send information about the Site, the Service, and special offers. You may opt out by using unsubscribe links or by emailing services@jtcleaners.com.",
+    ],
+  },
+  {
+    title: "Warranty Disclaimer and Limitation of Liability",
+    body: [
+      "THE SERVICE IS PROVIDED “AS IS,” WITHOUT WARRANTY OF ANY KIND, INCLUDING ANY WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, SECURITY, ACCURACY, OR NON-INFRINGEMENT. We do not guarantee uninterrupted or error-free access.",
+      "To the extent permitted by law, we are not liable for loss of profits, use, or data, or for incidental, indirect, special, consequential, or exemplary damages arising from your use of the Service, your User Content, or other interactions with the Service.",
+      "If you have a dispute with one or more users, restaurants, or merchants reviewed through the Service, you release us and our officers, directors, agents, subsidiaries, joint ventures, and employees from claims, demands, and damages arising out of or connected with those disputes.",
+    ],
+  },
+  {
+    title: "Modification and General Terms",
+    body: [
+      "We may amend these Terms of Use at any time, and your continued use of the Site or Service signifies agreement to revisions. Material changes may be announced on the homepage or by email.",
+      "If any part of this agreement is found invalid or unenforceable, the remaining portions remain in full force and effect. Any cause of action related to your relationship with the Company must commence within one year after the cause of action accrues.",
+      "These Terms are governed by the federal laws of the United States and the laws of the State of Wisconsin. You acknowledge that these Terms of Use together with the Privacy Policy represent the complete and exclusive statement of the agreement between you and JT Cleaning LLC.",
+    ],
+  },
+];
+
 function Index() {
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
   const [consentChoice, setConsentChoice] = useState<string | null>(null);
+  const [legalView, setLegalView] = useState<"privacy" | "terms">("privacy");
 
   useEffect(() => {
     if (typeof window === "undefined") return;
     setConsentChoice(window.localStorage.getItem(PRIVACY_CONSENT_KEY));
   }, []);
+
+  const openLegal = (view: "privacy" | "terms" = "privacy") => {
+    setLegalView(view);
+    setIsPrivacyOpen(true);
+  };
 
   const saveConsentChoice = (value: "accepted" | "opted_out") => {
     if (typeof window !== "undefined") {
@@ -210,22 +299,24 @@ function Index() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Header onOpenPrivacy={() => setIsPrivacyOpen(true)} />
+      <Header onOpenLegal={openLegal} />
       <main>
         <Hero />
         <Services />
         <Results />
         <AboutAndContact />
       </main>
-      <Footer onOpenPrivacy={() => setIsPrivacyOpen(true)} />
+      <Footer onOpenLegal={openLegal} />
       <PrivacyConsentBanner
         hidden={consentChoice !== null}
         onAccept={() => saveConsentChoice("accepted")}
         onOptOut={() => saveConsentChoice("opted_out")}
-        onOpenPrivacy={() => setIsPrivacyOpen(true)}
+        onOpenLegal={() => openLegal("privacy")}
       />
-      <PrivacyModal
+      <LegalModal
         isOpen={isPrivacyOpen}
+        view={legalView}
+        onChangeView={setLegalView}
         onClose={() => setIsPrivacyOpen(false)}
         onAccept={() => saveConsentChoice("accepted")}
         onOptOut={() => saveConsentChoice("opted_out")}
@@ -234,7 +325,7 @@ function Index() {
   );
 }
 
-function Header({ onOpenPrivacy }: { onOpenPrivacy: () => void }) {
+function Header({ onOpenLegal }: { onOpenLegal: (view?: "privacy" | "terms") => void }) {
   const links = [
     { href: "#services", label: "Services" },
     { href: "#results", label: "Results" },
@@ -260,10 +351,10 @@ function Header({ onOpenPrivacy }: { onOpenPrivacy: () => void }) {
           ))}
           <button
             type="button"
-            onClick={onOpenPrivacy}
+            onClick={() => onOpenLegal("privacy")}
             className="text-sm font-semibold text-foreground/58 transition-colors hover:text-primary"
           >
-            Privacy
+            Legal
           </button>
         </nav>
         <div className="flex items-center gap-2 sm:gap-3">
@@ -294,10 +385,10 @@ function Header({ onOpenPrivacy }: { onOpenPrivacy: () => void }) {
           ))}
           <button
             type="button"
-            onClick={onOpenPrivacy}
+            onClick={() => onOpenLegal("privacy")}
             className="shrink-0 transition-colors hover:text-primary"
           >
-            Privacy
+            Legal
           </button>
         </div>
       </div>
@@ -319,7 +410,7 @@ function Hero() {
           </h1>
           <p className="mt-5 max-w-xl text-base leading-7 text-muted-foreground sm:text-lg">
             JT Cleaning handles pressure washing, window cleaning, gutter cleaning, driveway
-            cleanup, and lawn mowing with simple scheduling and clear pricing.
+            cleanup, lawn mowing, and car detailing with simple scheduling and clear pricing.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <a
@@ -364,7 +455,7 @@ function Hero() {
                   Window cleaning
                 </div>
                 <div className="rounded-2xl bg-background/82 px-4 py-3 text-center">
-                  Lawn mowing
+                  Car detailing
                 </div>
               </div>
             </div>
@@ -478,10 +569,29 @@ function Results() {
 }
 
 function AboutAndContact() {
-  const [submitted, setSubmitted] = useState(false);
+  const search = Route.useSearch();
+  const [submitted, setSubmitted] = useState(search.contact === "success");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState("");
+  const [submitError, setSubmitError] = useState(
+    search.contact === "error" ? search.contactError || "Could not send message." : "",
+  );
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    setSubmitted(search.contact === "success");
+    setSubmitError(
+      search.contact === "error" ? search.contactError || "Could not send message." : "",
+    );
+  }, [search.contact, search.contactError]);
+
+  const clearContactSearchState = () => {
+    if (typeof window === "undefined") return;
+    const nextUrl = new URL(window.location.href);
+    nextUrl.searchParams.delete("contact");
+    nextUrl.searchParams.delete("contactError");
+    nextUrl.hash = "contact";
+    window.history.replaceState({}, "", `${nextUrl.pathname}${nextUrl.search}${nextUrl.hash}`);
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -513,6 +623,7 @@ function AboutAndContact() {
         method: "POST",
         headers: {
           "content-type": "application/json",
+          "x-jt-contact-request": "1",
         },
         body: JSON.stringify({
           name: data.name?.trim() ?? "",
@@ -532,6 +643,7 @@ function AboutAndContact() {
 
       form.reset();
       setSubmitted(true);
+      clearContactSearchState();
     } catch (error) {
       console.error(error);
       setSubmitError("Could not send message. Please call JT Cleaning directly.");
@@ -550,7 +662,7 @@ function AboutAndContact() {
           <SectionHeader
             eyebrow="About JT Cleaning"
             title="Simple service, clear communication, and a cleaner property."
-            sub="We focus on the work most homeowners actually need: strong exterior cleaning, bright windows, tidy walkways, and regular lawn mowing."
+            sub="We focus on the work most homeowners actually need: strong exterior cleaning, bright windows, tidy walkways, regular lawn mowing, and car detailing."
             align="left"
           />
           <div className="mt-8 rounded-[1.8rem] border border-border/70 bg-white/90 p-6 shadow-[0_26px_60px_-42px_rgba(8,43,92,0.42)]">
@@ -596,7 +708,11 @@ function AboutAndContact() {
                 .
               </p>
               <button
-                onClick={() => setSubmitted(false)}
+                type="button"
+                onClick={() => {
+                  clearContactSearchState();
+                  setSubmitted(false);
+                }}
                 className="mt-6 text-sm font-semibold text-primary transition-colors hover:text-foreground"
               >
                 Send another request
@@ -610,7 +726,13 @@ function AboutAndContact() {
                 sub="Share the service, the property, and anything you want us to know."
                 align="left"
               />
-              <form onSubmit={handleSubmit} noValidate className="mt-8 space-y-4">
+              <form
+                action="/api/contact"
+                method="post"
+                onSubmit={handleSubmit}
+                noValidate
+                className="mt-8 space-y-4"
+              >
                 <fieldset disabled={isSubmitting} className="space-y-4">
                   <Field label="Name" name="name" icon={User} error={errors.name} />
                   <Field label="Phone" name="phone" type="tel" icon={Phone} error={errors.phone} />
@@ -692,12 +814,12 @@ function PrivacyConsentBanner({
   hidden,
   onAccept,
   onOptOut,
-  onOpenPrivacy,
+  onOpenLegal,
 }: {
   hidden: boolean;
   onAccept: () => void;
   onOptOut: () => void;
-  onOpenPrivacy: () => void;
+  onOpenLegal: () => void;
 }) {
   if (hidden) return null;
 
@@ -707,25 +829,25 @@ function PrivacyConsentBanner({
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-3xl">
             <div className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-white/76">
-              Privacy Notice
+              Legal Notice
             </div>
             <h3 className="mt-2 font-[Outfit] text-2xl font-extrabold tracking-[-0.03em] text-white">
-              We use only limited site data and short-lived cookies.
+              Review our privacy policy and terms before using the site.
             </h3>
             <p className="mt-3 text-sm leading-6 text-white/82">
-              JT Cleaning uses cookies and browser data to keep the site working, improve
+              JT Cleaning uses limited cookies and browser data to keep the site working, improve
               experience, and respond to quote requests. You can accept or opt out of non-essential
-              tracking choices and review the full policy any time.
+              tracking choices and review the full privacy policy and terms of use any time.
             </p>
           </div>
           <div className="flex flex-wrap gap-3 lg:justify-end">
             <button
               type="button"
-              onClick={onOpenPrivacy}
+              onClick={onOpenLegal}
               className="inline-flex items-center gap-2 rounded-full border border-white/24 bg-white/10 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/16"
             >
               <FileText className="h-4 w-4" />
-              View Policy
+              View Legal
             </button>
             <button
               type="button"
@@ -748,75 +870,110 @@ function PrivacyConsentBanner({
   );
 }
 
-function PrivacyModal({
+function LegalModal({
   isOpen,
+  view,
+  onChangeView,
   onClose,
   onAccept,
   onOptOut,
 }: {
   isOpen: boolean;
+  view: "privacy" | "terms";
+  onChangeView: (view: "privacy" | "terms") => void;
   onClose: () => void;
   onAccept: () => void;
   onOptOut: () => void;
 }) {
   if (!isOpen) return null;
 
+  const activeSections = view === "privacy" ? privacySections : termsSections;
+  const modalTitle =
+    view === "privacy" ? "JT Cleaning LLC Privacy Policy" : "JT Cleaning LLC Terms of Use";
+  const modalIntro =
+    view === "privacy"
+      ? "This policy explains how JT Cleaning LLC collects, uses, shares, and protects information from visitors and customers using the website and quote-request service."
+      : "These terms explain how JT Cleaning LLC governs access to the website and service, including account conduct, content use, and liability limits.";
+
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-[rgba(8,26,53,0.56)] px-4 py-6 backdrop-blur-sm">
-      <div className="relative max-h-[90vh] w-full max-w-4xl overflow-hidden rounded-[2rem] border border-border/70 bg-white shadow-[0_38px_100px_-42px_rgba(8,43,92,0.55)]">
-        <button
-          type="button"
-          onClick={onClose}
-          className="absolute right-5 top-5 z-10 inline-flex h-11 w-11 items-center justify-center rounded-full border border-border/70 bg-white/92 text-foreground/74 transition-colors hover:text-primary"
-          aria-label="Close privacy policy"
-        >
-          <X className="h-5 w-5" />
-        </button>
-        <div className="overflow-y-auto px-6 pb-6 pt-8 sm:px-8 sm:pb-8 sm:pt-10">
-          <div className="max-w-3xl">
-            <div className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-primary">
-              Privacy Policy
+    <div className="fixed inset-0 z-[60] overflow-y-auto bg-[rgba(8,26,53,0.56)] px-4 py-6 backdrop-blur-sm">
+      <div className="flex min-h-full items-start justify-center sm:items-center">
+        <div className="relative flex h-[min(90vh,820px)] w-full max-w-4xl flex-col overflow-hidden rounded-[2rem] border border-border/70 bg-white shadow-[0_38px_100px_-42px_rgba(8,43,92,0.55)]">
+          <button
+            type="button"
+            onClick={onClose}
+            className="absolute right-5 top-5 z-10 inline-flex h-11 w-11 items-center justify-center rounded-full border border-border/70 bg-white/92 text-foreground/74 transition-colors hover:text-primary"
+            aria-label="Close legal modal"
+          >
+            <X className="h-5 w-5" />
+          </button>
+          <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 pb-6 pt-8 sm:px-8 sm:pb-8 sm:pt-10">
+            <div className="max-w-3xl">
+              <div className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-primary">
+                Legal Information
+              </div>
+              <h3 className="mt-3 font-[Outfit] text-3xl font-extrabold tracking-[-0.03em] text-foreground">
+                {modalTitle}
+              </h3>
+              <p className="mt-4 text-sm leading-6 text-muted-foreground">{modalIntro}</p>
             </div>
-            <h3 className="mt-3 font-[Outfit] text-3xl font-extrabold tracking-[-0.03em] text-foreground">
-              JT Cleaning LLC Privacy Policy
-            </h3>
-            <p className="mt-4 text-sm leading-6 text-muted-foreground">
-              This policy explains how JT Cleaning LLC collects, uses, shares, and protects
-              information from visitors and customers using the website and quote-request service.
-            </p>
-          </div>
-          <div className="mt-8 space-y-6">
-            {privacySections.map((section) => (
-              <section
-                key={section.title}
-                className="rounded-[1.5rem] border border-border/70 bg-[rgba(248,251,255,0.82)] p-5"
+            <div className="mt-6 flex flex-wrap gap-3">
+              <button
+                type="button"
+                onClick={() => onChangeView("privacy")}
+                className={`inline-flex items-center rounded-full px-4 py-2.5 text-sm font-semibold transition-colors ${
+                  view === "privacy"
+                    ? "bg-primary text-primary-foreground"
+                    : "border border-border bg-white text-foreground hover:border-primary/30 hover:text-primary"
+                }`}
               >
-                <h4 className="font-[Outfit] text-xl font-bold tracking-[-0.02em] text-foreground">
-                  {section.title}
-                </h4>
-                <div className="mt-3 space-y-3 text-sm leading-7 text-foreground/82">
-                  {section.body.map((paragraph) => (
-                    <p key={paragraph}>{paragraph}</p>
-                  ))}
-                </div>
-              </section>
-            ))}
-          </div>
-          <div className="mt-8 flex flex-wrap gap-3 border-t border-border/70 pt-6">
-            <button
-              type="button"
-              onClick={onOptOut}
-              className="inline-flex items-center rounded-full border border-border bg-white px-4 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
-            >
-              Opt Out
-            </button>
-            <button
-              type="button"
-              onClick={onAccept}
-              className="inline-flex items-center rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-transform duration-200 hover:-translate-y-0.5"
-            >
-              Accept
-            </button>
+                Privacy Policy
+              </button>
+              <button
+                type="button"
+                onClick={() => onChangeView("terms")}
+                className={`inline-flex items-center rounded-full px-4 py-2.5 text-sm font-semibold transition-colors ${
+                  view === "terms"
+                    ? "bg-primary text-primary-foreground"
+                    : "border border-border bg-white text-foreground hover:border-primary/30 hover:text-primary"
+                }`}
+              >
+                Terms of Use
+              </button>
+            </div>
+            <div className="mt-8 space-y-6">
+              {activeSections.map((section) => (
+                <section
+                  key={section.title}
+                  className="rounded-[1.5rem] border border-border/70 bg-[rgba(248,251,255,0.82)] p-5"
+                >
+                  <h4 className="font-[Outfit] text-xl font-bold tracking-[-0.02em] text-foreground">
+                    {section.title}
+                  </h4>
+                  <div className="mt-3 space-y-3 text-sm leading-7 text-foreground/82">
+                    {section.body.map((paragraph) => (
+                      <p key={paragraph}>{paragraph}</p>
+                    ))}
+                  </div>
+                </section>
+              ))}
+            </div>
+            <div className="mt-8 flex flex-wrap gap-3 border-t border-border/70 pt-6">
+              <button
+                type="button"
+                onClick={onOptOut}
+                className="inline-flex items-center rounded-full border border-border bg-white px-4 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
+              >
+                Opt Out
+              </button>
+              <button
+                type="button"
+                onClick={onAccept}
+                className="inline-flex items-center rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-transform duration-200 hover:-translate-y-0.5"
+              >
+                Accept
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -856,14 +1013,15 @@ function Field({
   );
 }
 
-function Footer({ onOpenPrivacy }: { onOpenPrivacy: () => void }) {
+function Footer({ onOpenLegal }: { onOpenLegal: (view?: "privacy" | "terms") => void }) {
   return (
     <footer className="border-t border-[rgba(255,255,255,0.08)] bg-[oklch(0.2_0.045_253)] text-white">
       <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
         <div className="flex items-center gap-4">
           <img src={logo} alt="JT Cleaning logo" className="h-14 w-auto object-contain" />
           <p className="max-w-md text-sm leading-6 text-white/72">
-            Pressure washing, window cleaning, and lawn mowing for homes that need a cleaner finish.
+            Pressure washing, window cleaning, lawn mowing, and car detailing for homes that need a
+            cleaner finish.
           </p>
         </div>
         <div className="flex flex-col gap-2 text-sm text-white/72 sm:items-end">
@@ -875,10 +1033,10 @@ function Footer({ onOpenPrivacy }: { onOpenPrivacy: () => void }) {
           </a>
           <button
             type="button"
-            onClick={onOpenPrivacy}
+            onClick={() => onOpenLegal("privacy")}
             className="text-xs font-medium text-white/58 transition-colors hover:text-white/86"
           >
-            View privacy policy
+            View privacy policy and terms
           </button>
           <span>© {new Date().getFullYear()} JT Cleaning. All rights reserved.</span>
         </div>

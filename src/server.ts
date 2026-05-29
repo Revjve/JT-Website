@@ -18,6 +18,8 @@ type ContactPayload = {
   company?: string;
 };
 
+const CONTACT_FORM_REQUEST_HEADER = "x-jt-contact-request";
+
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
 };
@@ -81,13 +83,67 @@ function getContactValidationError(payload: ContactPayload): string | null {
 }
 
 async function parseContactPayload(request: Request): Promise<ContactPayload | null> {
+  const contentType = request.headers.get("content-type") ?? "";
+
   try {
-    const body = await request.json();
-    if (!body || typeof body !== "object") return null;
-    return body as ContactPayload;
+    if (contentType.includes("application/json")) {
+      const body = await request.json();
+      if (!body || typeof body !== "object") return null;
+      return body as ContactPayload;
+    }
+
+    if (
+      contentType.includes("multipart/form-data") ||
+      contentType.includes("application/x-www-form-urlencoded")
+    ) {
+      const formData = await request.formData();
+      return {
+        name: normalizeField(formData.get("name")),
+        phone: normalizeField(formData.get("phone")),
+        email: normalizeField(formData.get("email")),
+        service: normalizeField(formData.get("service")),
+        message: normalizeField(formData.get("message")),
+        company: normalizeField(formData.get("company")),
+      };
+    }
+
+    return null;
   } catch {
     return null;
   }
+}
+
+function isEnhancedContactRequest(request: Request): boolean {
+  return request.headers.get(CONTACT_FORM_REQUEST_HEADER) === "1";
+}
+
+function contactRedirectResponse(request: Request, status: "success" | "error", error?: string) {
+  const url = new URL(request.url);
+  url.pathname = "/";
+  url.searchParams.set("contact", status);
+  if (status === "error" && error) {
+    url.searchParams.set("contactError", error);
+  } else {
+    url.searchParams.delete("contactError");
+  }
+  url.hash = "contact";
+  return Response.redirect(url.toString(), 303);
+}
+
+function contactErrorResponse(request: Request, statusCode: number, error: string): Response {
+  if (isEnhancedContactRequest(request)) {
+    return jsonResponse({ success: false, error }, statusCode);
+  }
+
+  return contactRedirectResponse(request, "error", error);
+}
+
+function contactSuccessResponse(request: Request): Response {
+  if (isEnhancedContactRequest(request)) {
+    return jsonResponse({ success: true });
+  }
+
+  return contactRedirectResponse(request, "success");
 }
 
 async function sendContactEmail(
@@ -157,23 +213,24 @@ async function handleContactRequest(request: Request, env: WorkerEnv): Promise<R
 
   const payload = await parseContactPayload(request);
   if (!payload) {
-    return jsonResponse({ success: false, error: "Missing required fields." }, 400);
+    return contactErrorResponse(request, 400, "Missing required fields.");
   }
 
   if (normalizeField(payload.company)) {
-    return jsonResponse({ success: true });
+    return contactSuccessResponse(request);
   }
 
   const validationError = getContactValidationError(payload);
   if (validationError) {
-    return jsonResponse({ success: false, error: validationError }, 400);
+    return contactErrorResponse(request, 400, validationError);
   }
 
   if (!env.RESEND_API_KEY || !env.CONTACT_TO_EMAIL || !env.CONTACT_FROM_EMAIL) {
     console.error("Missing contact email environment variables.");
-    return jsonResponse(
-      { success: false, error: "Could not send message. Please call JT Cleaning directly." },
+    return contactErrorResponse(
+      request,
       500,
+      "Could not send message. Please call JT Cleaning directly.",
     );
   }
 
@@ -186,12 +243,13 @@ async function handleContactRequest(request: Request, env: WorkerEnv): Promise<R
       message: normalizeField(payload.message),
     });
 
-    return jsonResponse({ success: true });
+    return contactSuccessResponse(request);
   } catch (error) {
     console.error(error);
-    return jsonResponse(
-      { success: false, error: "Could not send message. Please call JT Cleaning directly." },
+    return contactErrorResponse(
+      request,
       500,
+      "Could not send message. Please call JT Cleaning directly.",
     );
   }
 }

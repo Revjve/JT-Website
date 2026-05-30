@@ -72,21 +72,38 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "JT Cleaning" },
+      { title: "JT Cleaning | Pressure Washing & Exterior Cleaning Services" },
       {
         name: "description",
-        content: "Pressure washing, window cleaning, gutter cleaning, and lawn mowing.",
+        content:
+          "JT Cleaning provides professional pressure washing, house washing, driveway cleaning, sidewalk cleaning, gutter cleaning, and exterior cleaning services for homes and businesses. Call (920) 691-2356 for a free quote.",
       },
+      { name: "robots", content: "index, follow" },
       { name: "author", content: "JT Cleaning" },
-      { property: "og:title", content: "JT Cleaning" },
+      { property: "og:title", content: "JT Cleaning | Pressure Washing & Exterior Cleaning Services" },
       {
         property: "og:description",
-        content: "Pressure washing, window cleaning, gutter cleaning, and lawn mowing.",
+        content:
+          "JT Cleaning provides professional pressure washing, house washing, driveway cleaning, sidewalk cleaning, gutter cleaning, and exterior cleaning services for homes and businesses. Call (920) 691-2356 for a free quote.",
       },
+      { property: "og:url", content: "https://jtcleaners.com/" },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
+      { property: "og:site_name", content: "JT Cleaning" },
+      { property: "og:image", content: "https://jtcleaners.com/favicon.png" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "JT Cleaning | Pressure Washing & Exterior Cleaning Services" },
+      {
+        name: "twitter:description",
+        content:
+          "JT Cleaning provides professional pressure washing, house washing, driveway cleaning, sidewalk cleaning, gutter cleaning, and exterior cleaning services for homes and businesses. Call (920) 691-2356 for a free quote.",
+      },
+      { name: "twitter:image", content: "https://jtcleaners.com/favicon.png" },
     ],
     links: [
+      {
+        rel: "canonical",
+        href: "https://jtcleaners.com/",
+      },
       {
         rel: "icon",
         type: "image/png",

@@ -34,25 +34,39 @@ export const Route = createFileRoute("/")({
   },
   head: () => ({
     meta: [
-      { title: "JT Cleaning | Pressure Washing, Window Cleaning & Lawn Mowing" },
+      { title: "JT Cleaning | Pressure Washing & Exterior Cleaning Services" },
       {
         name: "description",
         content:
-          "JT Cleaning provides pressure washing, window cleaning, gutter cleaning, lawn mowing, and car detailing for local homes. Call (920) 691-2356 for a free quote.",
+          "JT Cleaning provides professional pressure washing, house washing, driveway cleaning, sidewalk cleaning, gutter cleaning, and exterior cleaning services for homes and businesses. Call (920) 691-2356 for a free quote.",
       },
+      { name: "robots", content: "index, follow" },
       {
         property: "og:title",
-        content: "JT Cleaning | Pressure Washing, Window Cleaning & Lawn Mowing",
+        content: "JT Cleaning | Pressure Washing & Exterior Cleaning Services",
       },
       {
         property: "og:description",
         content:
-          "Simple, reliable exterior cleaning and lawn care for local homes. Free quotes at (920) 691-2356.",
+          "JT Cleaning provides professional pressure washing, house washing, driveway cleaning, sidewalk cleaning, gutter cleaning, and exterior cleaning services for homes and businesses. Call (920) 691-2356 for a free quote.",
       },
+      { property: "og:site_name", content: "JT Cleaning" },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/" },
+      { property: "og:url", content: "https://jtcleaners.com/" },
+      { property: "og:image", content: "https://jtcleaners.com/favicon.png" },
+      { name: "twitter:card", content: "summary_large_image" },
+      {
+        name: "twitter:title",
+        content: "JT Cleaning | Pressure Washing & Exterior Cleaning Services",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "JT Cleaning provides professional pressure washing, house washing, driveway cleaning, sidewalk cleaning, gutter cleaning, and exterior cleaning services for homes and businesses. Call (920) 691-2356 for a free quote.",
+      },
+      { name: "twitter:image", content: "https://jtcleaners.com/favicon.png" },
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: [{ rel: "canonical", href: "https://jtcleaners.com/" }],
     scripts: [
       {
         type: "application/ld+json",
@@ -60,10 +74,22 @@ export const Route = createFileRoute("/")({
           "@context": "https://schema.org",
           "@type": "LocalBusiness",
           name: "JT Cleaning",
+          url: "https://jtcleaners.com",
+          logo: "https://jtcleaners.com/favicon.png",
           telephone: "+19206912356",
           description:
-            "Pressure washing, window cleaning, gutter cleaning, driveway cleaning, lawn mowing, and car detailing for local homes.",
-          areaServed: "Local",
+            "Professional pressure washing and exterior cleaning services for homes and businesses.",
+          areaServed: "Wisconsin",
+          serviceType: [
+            "Pressure Washing",
+            "House Washing",
+            "Driveway Cleaning",
+            "Sidewalk Cleaning",
+            "Deck & Patio Cleaning",
+            "Gutter Cleaning",
+            "Commercial Cleaning",
+            "Exterior Surface Cleaning",
+          ],
         }),
       },
     ],
@@ -71,7 +97,7 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const PHONE_TEL = "tel:9206912356";
+const PHONE_TEL = "tel:+19206912356";
 const PHONE_DISPLAY = "(920) 691-2356";
 const PRIVACY_CONSENT_KEY = "jt-cleaning-privacy-choice";
 
@@ -79,7 +105,7 @@ const services = [
   {
     icon: Droplets,
     title: "Pressure Washing",
-    desc: "A strong surface clean for siding, concrete, patios, and built-up grime.",
+    desc: "Professional pressure washing for siding, concrete, patios, and built-up grime around the property.",
   },
   {
     icon: Sparkles,
@@ -114,7 +140,7 @@ const services = [
   {
     icon: ShieldCheck,
     title: "Exterior Surface Cleaning",
-    desc: "Fence lines, garage doors, and other outdoor surfaces cleaned with care.",
+    desc: "Exterior cleaning for fence lines, garage doors, storefront areas, and other outdoor surfaces cleaned with care.",
   },
 ];
 
@@ -122,23 +148,23 @@ const benefits = [
   "Free quotes with straightforward pricing",
   "Fast communication and dependable arrival times",
   "Careful work that respects your property",
-  "A cleaner-looking home without the hassle",
+  "A cleaner-looking home or business without the hassle",
 ];
 
 const results = [
   {
     img: baDriveway,
-    alt: "Before and after driveway cleaning",
+    alt: "Before and after pressure washing results on a concrete driveway",
     title: "Driveway refresh",
   },
   {
     img: baHouse,
-    alt: "Before and after exterior house cleaning",
+    alt: "Before and after exterior house washing and siding cleaning",
     title: "Exterior cleanup",
   },
   {
     img: baDeck,
-    alt: "Before and after deck cleaning",
+    alt: "Before and after deck and patio surface cleaning",
     title: "Deck reset",
   },
 ];
@@ -349,13 +375,6 @@ function Header({ onOpenLegal }: { onOpenLegal: (view?: "privacy" | "terms") => 
               {link.label}
             </a>
           ))}
-          <button
-            type="button"
-            onClick={() => onOpenLegal("privacy")}
-            className="text-sm font-semibold text-foreground/58 transition-colors hover:text-primary"
-          >
-            Legal
-          </button>
         </nav>
         <div className="flex items-center gap-2 sm:gap-3">
           <a
@@ -383,13 +402,6 @@ function Header({ onOpenLegal }: { onOpenLegal: (view?: "privacy" | "terms") => 
               {link.label}
             </a>
           ))}
-          <button
-            type="button"
-            onClick={() => onOpenLegal("privacy")}
-            className="shrink-0 transition-colors hover:text-primary"
-          >
-            Legal
-          </button>
         </div>
       </div>
     </header>
@@ -409,8 +421,14 @@ function Hero() {
             A cleaner-looking home without overcomplicating the job.
           </h1>
           <p className="mt-5 max-w-xl text-base leading-7 text-muted-foreground sm:text-lg">
-            JT Cleaning handles pressure washing, window cleaning, gutter cleaning, driveway
-            cleanup, lawn mowing, and car detailing with simple scheduling and clear pricing.
+            JT Cleaning provides pressure washing, house washing, driveway cleaning, sidewalk
+            cleaning, gutter cleaning, exterior cleaning, and related property cleanup with simple
+            scheduling and clear pricing.
+          </p>
+          <p className="mt-3 max-w-xl text-sm font-medium leading-6 text-foreground/72 sm:text-base">
+            JT Cleaning provides pressure washing and exterior cleaning services for homes and
+            businesses throughout the local Wisconsin area, including Jefferson County and nearby
+            communities.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <a
@@ -506,7 +524,7 @@ function Services() {
         <SectionHeader
           eyebrow="Services"
           title="The work we handle most often"
-          sub="Straightforward services that help the whole property look cleaner, brighter, and more maintained."
+          sub="Straightforward pressure washing and exterior cleaning services that help homes and businesses look cleaner, brighter, and more maintained."
         />
         <div className="mt-12 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {services.map((service) => (
@@ -662,7 +680,7 @@ function AboutAndContact() {
           <SectionHeader
             eyebrow="About JT Cleaning"
             title="Simple service, clear communication, and a cleaner property."
-            sub="We focus on the work most homeowners actually need: strong exterior cleaning, bright windows, tidy walkways, regular lawn mowing, and car detailing."
+            sub="We focus on practical exterior cleaning work for homes and businesses, including pressure washing, house washing, sidewalk cleaning, gutter cleaning, and related surface cleanup."
             align="left"
           />
           <div className="mt-8 rounded-[1.8rem] border border-border/70 bg-white/90 p-6 shadow-[0_26px_60px_-42px_rgba(8,43,92,0.42)]">
@@ -677,6 +695,10 @@ function AboutAndContact() {
             </a>
             <p className="mt-3 max-w-sm text-sm leading-6 text-muted-foreground">
               Free quotes, quick replies, and a clear scope before work starts.
+            </p>
+            <p className="mt-3 max-w-sm text-sm leading-6 text-foreground/78">
+              Based in Jefferson County, Wisconsin, and available in nearby areas for residential
+              and light commercial cleaning work when the job is a good fit.
             </p>
             <ul className="mt-6 space-y-3">
               {benefits.slice(0, 3).map((benefit) => (
@@ -907,7 +929,7 @@ function LegalModal({
           >
             <X className="h-5 w-5" />
           </button>
-          <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 pb-6 pt-8 sm:px-8 sm:pb-8 sm:pt-10">
+          <div className="custom-scrollbar min-h-0 flex-1 overflow-y-auto px-6 pb-6 pt-8 sm:px-8 sm:pb-8 sm:pt-10">
             <div className="max-w-3xl">
               <div className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-primary">
                 Legal Information

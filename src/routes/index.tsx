@@ -16,6 +16,7 @@ import {
   Wind,
   X,
 } from "lucide-react";
+import { DetailingPackagesSection } from "@/components/detailing-packages";
 import logo from "@/assets/jt-logo.png";
 import heroImg from "@/assets/hero-house.jpg";
 import baDriveway from "@/assets/ba-driveway.jpg";
@@ -26,10 +27,12 @@ export const Route = createFileRoute("/")({
   validateSearch: (search) => {
     const contact = search.contact;
     const contactError = search.contactError;
+    const service = search.service;
 
     return {
       contact: contact === "success" || contact === "error" ? contact : undefined,
       contactError: typeof contactError === "string" ? contactError : undefined,
+      service: typeof service === "string" ? service : undefined,
     };
   },
   head: () => ({
@@ -38,7 +41,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "JT Cleaning provides professional pressure washing, house washing, driveway cleaning, sidewalk cleaning, gutter cleaning, and exterior cleaning services for homes and businesses. Call (920) 691-2356 for a free quote.",
+          "JT Cleaning provides professional pressure washing, house washing, driveway cleaning, sidewalk cleaning, gutter cleaning, and exterior cleaning services for homes and businesses. Call (262) 731-3479 for a free quote.",
       },
       { name: "robots", content: "index, follow" },
       {
@@ -48,7 +51,7 @@ export const Route = createFileRoute("/")({
       {
         property: "og:description",
         content:
-          "JT Cleaning provides professional pressure washing, house washing, driveway cleaning, sidewalk cleaning, gutter cleaning, and exterior cleaning services for homes and businesses. Call (920) 691-2356 for a free quote.",
+          "JT Cleaning provides professional pressure washing, house washing, driveway cleaning, sidewalk cleaning, gutter cleaning, and exterior cleaning services for homes and businesses. Call (262) 731-3479 for a free quote.",
       },
       { property: "og:site_name", content: "JT Cleaning" },
       { property: "og:type", content: "website" },
@@ -62,7 +65,7 @@ export const Route = createFileRoute("/")({
       {
         name: "twitter:description",
         content:
-          "JT Cleaning provides professional pressure washing, house washing, driveway cleaning, sidewalk cleaning, gutter cleaning, and exterior cleaning services for homes and businesses. Call (920) 691-2356 for a free quote.",
+          "JT Cleaning provides professional pressure washing, house washing, driveway cleaning, sidewalk cleaning, gutter cleaning, and exterior cleaning services for homes and businesses. Call (262) 731-3479 for a free quote.",
       },
       { name: "twitter:image", content: "https://jtcleaners.com/favicon.png" },
     ],
@@ -76,7 +79,7 @@ export const Route = createFileRoute("/")({
           name: "JT Cleaning",
           url: "https://jtcleaners.com",
           logo: "https://jtcleaners.com/favicon.png",
-          telephone: "+19206912356",
+          telephone: "+12627313479",
           description:
             "Professional pressure washing and exterior cleaning services for homes and businesses.",
           areaServed: "Wisconsin",
@@ -89,6 +92,10 @@ export const Route = createFileRoute("/")({
             "Gutter Cleaning",
             "Commercial Cleaning",
             "Exterior Surface Cleaning",
+            "Car Detailing",
+            "Interior Car Detailing",
+            "Exterior Car Detailing",
+            "Vehicle Detailing Packages",
           ],
         }),
       },
@@ -97,8 +104,8 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const PHONE_TEL = "tel:+19206912356";
-const PHONE_DISPLAY = "(920) 691-2356";
+const PHONE_TEL = "tel:+12627313479";
+const PHONE_DISPLAY = "(262) 731-3479";
 const PRIVACY_CONSENT_KEY = "jt-cleaning-privacy-choice";
 
 const services = [
@@ -142,6 +149,13 @@ const services = [
     title: "Exterior Surface Cleaning",
     desc: "Exterior cleaning for fence lines, garage doors, storefront areas, and other outdoor surfaces cleaned with care.",
   },
+];
+
+const contactServiceOptions = [
+  ...services.map((service) => service.title),
+  "Basic Detailing Package",
+  "Pro Detailing Package",
+  "Plus Detailing Package",
 ];
 
 const benefits = [
@@ -329,6 +343,7 @@ function Index() {
       <main>
         <Hero />
         <Services />
+        <DetailingPreviewSection />
         <Results />
         <AboutAndContact />
       </main>
@@ -354,6 +369,7 @@ function Index() {
 function Header({ onOpenLegal }: { onOpenLegal: (view?: "privacy" | "terms") => void }) {
   const links = [
     { href: "#services", label: "Services" },
+    { href: "/detailing", label: "Detailing" },
     { href: "#results", label: "Results" },
     { href: "#about", label: "About" },
     { href: "#contact", label: "Free Quote" },
@@ -539,9 +555,42 @@ function Services() {
                 {service.title}
               </h3>
               <p className="mt-3 text-sm leading-6 text-muted-foreground">{service.desc}</p>
+              {service.title === "Car Detailing" ? (
+                <a
+                  href="/detailing"
+                  className="mt-5 inline-flex items-center text-sm font-semibold text-primary transition-colors hover:text-foreground"
+                >
+                  View packages
+                </a>
+              ) : null}
             </article>
           ))}
         </div>
+      </div>
+    </section>
+  );
+}
+
+function DetailingPreviewSection() {
+  return (
+    <section className="py-18 sm:py-20">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <SectionHeader
+            eyebrow="Vehicle Detailing Packages"
+            title="Three detailing levels, one easy quote path."
+            sub="Choose the package that fits your vehicle and budget, then jump straight into the existing JT Cleaning quote form."
+            align="left"
+          />
+          <a
+            href="/detailing"
+            className="inline-flex items-center justify-center self-start rounded-full border border-primary/16 bg-[linear-gradient(135deg,rgba(255,255,255,0.96),rgba(231,242,255,0.92))] px-5 py-3 text-sm font-semibold text-primary transition-transform duration-200 hover:-translate-y-0.5"
+          >
+            View All Packages
+          </a>
+        </div>
+
+        <DetailingPackagesSection variant="preview" />
       </div>
     </section>
   );
@@ -607,6 +656,7 @@ function AboutAndContact() {
     const nextUrl = new URL(window.location.href);
     nextUrl.searchParams.delete("contact");
     nextUrl.searchParams.delete("contactError");
+    nextUrl.searchParams.delete("service");
     nextUrl.hash = "contact";
     window.history.replaceState({}, "", `${nextUrl.pathname}${nextUrl.search}${nextUrl.hash}`);
   };
@@ -780,15 +830,16 @@ function AboutAndContact() {
                       Service Needed
                     </label>
                     <select
+                      key={`service-${search.service ?? "default"}`}
                       id="service"
                       name="service"
-                      defaultValue=""
+                      defaultValue={search.service ?? ""}
                       className="w-full rounded-2xl border border-input bg-background px-4 py-3 text-sm text-foreground outline-none transition-colors focus:border-primary/40"
                     >
                       <option value="">Select a service</option>
-                      {services.map((service) => (
-                        <option key={service.title} value={service.title}>
-                          {service.title}
+                      {contactServiceOptions.map((service) => (
+                        <option key={service} value={service}>
+                          {service}
                         </option>
                       ))}
                       <option value="Other">Other</option>

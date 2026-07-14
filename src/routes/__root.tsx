@@ -76,7 +76,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "JT Cleaning provides professional pressure washing, house washing, driveway cleaning, sidewalk cleaning, gutter cleaning, and exterior cleaning services for homes and businesses. Call (920) 691-2356 for a free quote.",
+          "JT Cleaning provides professional pressure washing, house washing, driveway cleaning, sidewalk cleaning, gutter cleaning, and exterior cleaning services for homes and businesses. Call (262) 731-3479 for a free quote.",
       },
       { name: "robots", content: "index, follow" },
       { name: "author", content: "JT Cleaning" },
@@ -84,7 +84,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         property: "og:description",
         content:
-          "JT Cleaning provides professional pressure washing, house washing, driveway cleaning, sidewalk cleaning, gutter cleaning, and exterior cleaning services for homes and businesses. Call (920) 691-2356 for a free quote.",
+          "JT Cleaning provides professional pressure washing, house washing, driveway cleaning, sidewalk cleaning, gutter cleaning, and exterior cleaning services for homes and businesses. Call (262) 731-3479 for a free quote.",
       },
       { property: "og:url", content: "https://jtcleaners.com/" },
       { property: "og:type", content: "website" },
@@ -95,7 +95,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "twitter:description",
         content:
-          "JT Cleaning provides professional pressure washing, house washing, driveway cleaning, sidewalk cleaning, gutter cleaning, and exterior cleaning services for homes and businesses. Call (920) 691-2356 for a free quote.",
+          "JT Cleaning provides professional pressure washing, house washing, driveway cleaning, sidewalk cleaning, gutter cleaning, and exterior cleaning services for homes and businesses. Call (262) 731-3479 for a free quote.",
       },
       { name: "twitter:image", content: "https://jtcleaners.com/favicon.png" },
     ],
